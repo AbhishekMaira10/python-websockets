@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOGWATCHER</title>
+  </head>
+  <body>
+    <h1>LOGWATCHER</h1>
+    <div>
+      <div calss="logs" id="logs"></div>
+    </div>
+  </body>
+  <script>
+    const socket = new WebSocket('ws://localhost:8080')
+    socket.onopen = (event) => {
+      socket.send('Hello, World!')
+    }
+
+    socket.onmessage = (event) => {
+      let data = JSON.parse(event.data)
+
+      if (data.logs) {
+        data.logs.forEach((log) => {
+          let p = document.createElement('p')
+          p.textContent = log
+          document.getElementById('logs').append(p)
+        })
+      }
+    }
+  </script>
+</html>
